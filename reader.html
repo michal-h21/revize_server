@@ -40,8 +40,14 @@ function show_status(msg, oddil, barcode, state){
 }
 function send_barcode(barcode){
   // todo: posla čárový kód na server
-  var state = "ok";
-  var msg = "ok";
+  let msg="Ok";
+  let state="OK";
+  fetch("/", {
+    method: 'POST',
+    cache: 'no-cache',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({task: barcode})
+  }).then(response => response.json());
   show_status(msg,oddil, barcode, state);
 }
 function print_info(text){
