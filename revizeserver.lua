@@ -19,6 +19,7 @@ curl -v -H "Content-Type: application/json" -X DELETE http://localhost:8080/todo
 curl -v localhost:8080/todo
 ]]
 
+
 local restserver = require("restserver")
 
 local server = restserver:new():port(8080)
@@ -26,14 +27,20 @@ local server = restserver:new():port(8080)
 local todo_list = {}
 local next_id = 0
 
-server:add_resource("todo", {
+local f = io.open("reader.html", "r")
+
+local page = f:read("*all")
+f:close()
+
+server:add_resource("", {
 
    {
       method = "GET",
       path = "/",
-      produces = "application/json",
+      produces = "text/html",
       handler = function()
-         return restserver.response():status(200):entity(todo_list)
+        print "ahoj"
+         return restserver.response():status(200):entity(page)
       end,
    },
    
