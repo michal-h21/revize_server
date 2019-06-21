@@ -19,7 +19,7 @@ curl -v -H "Content-Type: application/json" -X DELETE http://localhost:8080/todo
 curl -v localhost:8080/todo
 ]]
 
-
+package.path = "./?.lua;" .. package.path
 local restserver = require("restserver")
 
 local server = restserver:new():port(8080)
