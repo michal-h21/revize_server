@@ -59,7 +59,9 @@ server:add_resource("", {
          task_submission.done = false
          table.insert(todo_list, task_submission)
          local result = {
-            id = task_submission.id
+            id = task_submission.id,
+            msg = "Ok " .. task_submission.id,
+            state = "ok"
          }
          return restserver.response():status(200):entity(result)
       end,
