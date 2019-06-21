@@ -33,6 +33,7 @@ function nastav_oddil(){
 }
 
 
+
 function show_status(msg, oddil, barcode, state){
   var tpl = `<tr class="${state}"><td>${msg}</td><td>${barcode}</td><td>${oddil}</td></tr>`;
   var results = document.getElementById("results");
@@ -49,7 +50,6 @@ function send_barcode(barcode){
     body: JSON.stringify({task: barcode})
   }).then(response => {
     response.json().then(response_table => {
-      console.log(response_table);
       msg = response_table.msg;
       state = response_table.state;
       show_status(msg,oddil, barcode, state);
