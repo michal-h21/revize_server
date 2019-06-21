@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+  <script>
+    console.log("copak?");
+  </script>
+  </head>
+  <body>
+    <div>
+      <h1>Revize</h1>
+      <form name="oddil_form" method="get" onsubmit="return nastav_oddil()">
+      <input id="oddil" name="oddil" />
+      <input type="submit" value="Nastavit oddíl" />
+      </form>
+      <h2>Současný oddíl - <span id="souc_oddil"></span></h2>
+      <span id="result">result</span>
+    </div>
+    <table>
+      <tr id="results"><th>Status</th><th>Čárový kód</th><th>Oddíl</th></tr>
+    </table>
+<script>
+console.log("ahoj");
+var current_text = "";
+var oddil = "";
+
+function nastav_oddil(){
+  var oddil_input = document.getElementById("oddil");
+  oddil = oddil_input.value;
+  oddil_input.value = oddil;
+  document.getElementById("souc_oddil").innerHTML = oddil;
+  return false;
+}
+
+
+function show_status(msg, oddil, barcode, state){
+  var tpl = `<tr class="${state}"><td>${msg}</td><td>${barcode}</td><td>${oddil}</td></tr>`;
+  var results = document.getElementById("results");
+  results.insertAdjacentHTML("afterend", tpl);
+}
+function send_barcode(barcode){
+  // todo: posla čárový kód na server
+  var state = "ok";
+  var msg = "ok";
+  show_status(msg,oddil, barcode, state);
+}
+function print_info(text){
+  var result = document.getElementById("result").innerHTML = text;
+}
+window.addEventListener("keydown", function (event) {
+    // načítání čárových kódů
+    if (event.defaultPrevented) {
+          return; // Do nothing if the event was already processed
+        }
+    switch (event.key) {
+            case "Enter":
+                print_info(current_text); 
+                send_barcode(current_text);
+                current_text = "";
+                break;
+            default:
+              var number = parseInt(event.key);
+              if(!isNaN(number)) current_text += number;
+              return; // Quit when this doesn't handle the key event.
+            }
+
+    // Cancel the default action to avoid it being handled twice
+    event.preventDefault();
+}, true);
+</script>
+  </body>
+</html>
