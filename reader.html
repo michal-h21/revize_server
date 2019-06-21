@@ -47,8 +47,14 @@ function send_barcode(barcode){
     cache: 'no-cache',
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({task: barcode})
-  }).then(response => response.json());
-  show_status(msg,oddil, barcode, state);
+  }).then(response => {
+    response.json().then(response_table => {
+      console.log(response_table);
+      msg = response_table.msg;
+      state = response_table.state;
+      show_status(msg,oddil, barcode, state);
+    });
+  });
 }
 function print_info(text){
   var result = document.getElementById("result").innerHTML = text;
