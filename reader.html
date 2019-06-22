@@ -2,9 +2,6 @@
 <html>
   <head>
     <meta charset="utf-8" />
-  <script>
-    console.log("copak?");
-  </script>
   </head>
   <body>
     <div>
@@ -13,8 +10,9 @@
       <input id="oddil" name="oddil" />
       <input type="submit" value="Nastavit oddíl" />
       </form>
+      <div class="menu"><a href="#end">Konec</a> - <a href="#revize">zrevidovat</a></div>
       <h2>Současný oddíl - <span id="souc_oddil"></span></h2>
-      <span id="result">result</span>
+      <div>Poslední čárový kód: <span id="result">result</span></div>
     </div>
     <table>
       <tr id="results"><th>Status</th><th>Čárový kód</th><th>Oddíl</th></tr>
@@ -39,6 +37,7 @@ function show_status(msg, oddil, barcode, state){
   var results = document.getElementById("results");
   results.insertAdjacentHTML("afterend", tpl);
 }
+
 function send_barcode(barcode){
   let msg="Ok";
   let state="OK";
@@ -55,6 +54,22 @@ function send_barcode(barcode){
     });
   });
 }
+
+var handlers = {
+  "#end": (response => {
+    console.log("jsem tu");
+    print_info("Konec");
+  })
+}
+
+function handle_menu(event){
+  const href = event.target.getAttribute("href");
+  const handler = handlers[href];
+  console.log("a tady "+href);
+  console.log(handler);
+  fetch(href, {method: "GET"}).then(handler);
+}
+
 function print_info(text){
   var result = document.getElementById("result").innerHTML = text;
 }
@@ -85,6 +100,12 @@ window.addEventListener("keydown", function (event) {
     // Cancel the default action to avoid it being handled twice
     event.preventDefault();
 }, true);
+
+// catch menu actions
+const menu = document.querySelectorAll(".menu a");
+menu.forEach(menuitem=>{
+  menuitem.addEventListener('click', handle_menu);
+})
 </script>
   </body>
 </html>
