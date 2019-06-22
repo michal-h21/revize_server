@@ -40,7 +40,6 @@ function show_status(msg, oddil, barcode, state){
   results.insertAdjacentHTML("afterend", tpl);
 }
 function send_barcode(barcode){
-  // todo: posla čárový kód na server
   let msg="Ok";
   let state="OK";
   fetch("/", {
@@ -66,8 +65,15 @@ window.addEventListener("keydown", function (event) {
         }
     switch (event.key) {
             case "Enter":
-                print_info(current_text); 
-                send_barcode(current_text);
+                if(event.target.id === "oddil"){ // enter byl zmáčknutý ve formuláři pro nastavení oddílu
+                  nastav_oddil();
+                  event.target.blur(); // remove focus from the <input>
+                }{
+                  if(current_text.trim().length > 0){
+                    print_info(current_text); 
+                    send_barcode(current_text);
+                  }
+                }
                 current_text = "";
                 break;
             default:
