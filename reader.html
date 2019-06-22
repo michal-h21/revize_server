@@ -57,7 +57,6 @@ function send_barcode(barcode){
 
 var handlers = {
   "#end": (response => {
-    console.log("jsem tu");
     print_info("Konec");
   })
 }
@@ -65,8 +64,8 @@ var handlers = {
 function handle_menu(event){
   const href = event.target.getAttribute("href");
   const handler = handlers[href];
-  console.log("a tady "+href);
-  console.log(handler);
+  const method = href.replace("#", "");
+  console.log("metoda "+method);
   fetch(href, {method: "GET"}).then(handler);
 }
 

@@ -33,7 +33,20 @@ local page = f:read("*all")
 f:close()
 
 server:add_resource("", {
-
+   {
+      method = "GET",
+      path = "end",
+      produces = "application/json",
+      handler = function()
+        result = {
+          msg = "Konec",
+          state = "end"
+        }
+        print("Konec")
+        os.exit()
+        -- return restserver.response():status(200):entity(result)
+      end
+   },
    {
       method = "GET",
       path = "/",
