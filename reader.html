@@ -64,9 +64,9 @@ var handlers = {
 function handle_menu(event){
   const href = event.target.getAttribute("href");
   const handler = handlers[href];
-  const method = href.replace("#", "");
+  const method = href.replace("#", "/");
   console.log("metoda "+method);
-  fetch(href, {method: "GET"}).then(handler);
+  fetch(method, {method: "GET"}).then(handler);
 }
 
 function print_info(text){
