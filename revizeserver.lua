@@ -52,8 +52,8 @@ server:add_resource("", {
       path = "/",
       produces = "text/html",
       handler = function()
-        print "ahoj"
-         return restserver.response():status(200):entity(page)
+        print "Load page"
+        return restserver.response():status(200):entity(page)
       end,
    },
    
@@ -63,10 +63,11 @@ server:add_resource("", {
       consumes = "application/json",
       produces = "application/json",
       input_schema = {
-         task = { type = "string" },
+         barcode = { type = "string" },
+         section = { type = "string" }
       },
       handler = function(task_submission)
-         print("Received task: " .. task_submission.task)
+         print("Received barcode: " .. task_submission.barcode .. "@".. task_submission.section)
          next_id = next_id + 1
          task_submission.id = next_id
          task_submission.done = false

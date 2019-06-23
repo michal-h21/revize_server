@@ -19,8 +19,8 @@
     </table>
 <script>
 console.log("ahoj");
-var current_text = "";
-var oddil = "";
+let current_text = "";
+let oddil = "";
 
 function nastav_oddil(){
   var oddil_input = document.getElementById("oddil");
@@ -45,7 +45,7 @@ function send_barcode(barcode){
     method: 'POST',
     cache: 'no-cache',
     headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({task: barcode})
+    body: JSON.stringify({barcode: barcode, section: oddil})
   }).then(response => {
     response.json().then(response_table => {
       msg = response_table.msg;
