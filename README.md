@@ -1,6 +1,10 @@
 # Příprava souborů
 
-    revize_priprava xml_soubor_z_alephu > tabulka.tsv
+Vygenerovat seznam jednotek pro danou část fondu pomocí obecného formuláře pro vyhledávání.
+
+Vygenerovat tsv soubor pomocí skriptu (je součástí skriptů přírustkového seznamu)
+
+    ./revize_priprava xml_soubor_z_alephu > tabulka.tsv
 
 # Nová revize
 
