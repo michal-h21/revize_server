@@ -27,7 +27,7 @@ local server = restserver:new():port(8080)
 local todo_list = {}
 local next_id = 0
 
-local f = io.open("reader.html", "r")
+local f = io.open("tpl/reader.html", "r")
 
 local page = f:read("*all")
 f:close()
