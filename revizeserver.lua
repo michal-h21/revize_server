@@ -21,6 +21,16 @@ curl -v localhost:8080/todo
 
 package.path = "./?.lua;" .. package.path
 local restserver = require("restserver")
+local config = require("revize/config")
+local revizeobj = require("revize/revizeobj")
+
+local settings = config.load_file("data/config.lua")
+
+local codes = settings.codes or "data/codes.txt"
+local data = settings.data or "data/data.tsv"
+
+revizeobj:load_data(data)
+revizeobj:load_codes(codes)
 
 local server = restserver:new():port(8080)
 
@@ -67,17 +77,25 @@ server:add_resource("", {
          section = { type = "string" }
       },
       handler = function(task_submission)
-         print("Received barcode: " .. task_submission.barcode .. "@".. task_submission.section)
-         next_id = next_id + 1
-         task_submission.id = next_id
-         task_submission.done = false
-         table.insert(todo_list, task_submission)
-         local result = {
-            id = task_submission.id,
-            msg = "Ok " .. task_submission.id,
-            state = "ok"
-         }
-         return restserver.response():status(200):entity(result)
+        local barcode, section = task_submission.barcode, task_submission.section
+        print("Received barcode: " .. task_submission.barcode .. "@".. task_submission.section)
+        next_id = next_id + 1
+        task_submission.id = next_id
+        task_submission.done = false
+        table.insert(todo_list, task_submission)
+        local result = {
+          id = task_submission.id,
+          msg = "Ok " .. task_submission.id,
+          state = "ok"
+        }
+        if section == "" then
+          result.state = "error"
+          result.msg = "Chybí název oddílu"
+        else
+          -- todo: tady dělat testy
+
+        end
+        return restserver.response():status(200):entity(result)
       end,
    },
 
