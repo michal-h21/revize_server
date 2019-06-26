@@ -148,30 +148,30 @@ end
 local test = setmetatable({}, revize)
 
 
-local data = test:load_data("data/studovna-revize.tsv")
-for k,v in pairs(data["2599210012"]) do 
-  print(k, v)
-end
-
-test:load_codes("data/text.txt")
-
--- math.randomseed( os.time() )
-
--- for i =1, 3 do
-  -- test:send_barcode(math.random(), "test")
+-- local data = test:load_data("data/studovna-revize.tsv")
+-- for k,v in pairs(data["2599210012"]) do 
+--   print(k, v)
 -- end
---
-
-local barcode = "2599210012"
-local section = "PŘÍRUČKA"
-test:send_barcode(barcode,section)
-test:send_barcode("2592021830", section) -- následující signatura CD
-print("Existuje?", test:test_barcode(barcode,section))
-print("signatura 2?", test:test_section(barcode,section))
-print("Je půjčená?", test:test_pujceno(barcode, section))
-print("Status jednotky", test:test_status(barcode, section, {statusy = {["Nelze půjčit"]=true}}))
-print("Lokace", test:test_lokace(barcode,  section, {lokace = "Rett-studovna"}))
-print("Zpracování", test:test_zpracovani(barcode, section))
-print("Posloupnost signatur", test:test_signatury("2592021830", section))
-os.exit()
+-- 
+-- test:load_codes("data/text.txt")
+-- 
+-- -- math.randomseed( os.time() )
+-- 
+-- -- for i =1, 3 do
+--   -- test:send_barcode(math.random(), "test")
+-- -- end
+-- --
+-- 
+-- local barcode = "2599210012"
+-- local section = "PŘÍRUČKA"
+-- test:send_barcode(barcode,section)
+-- test:send_barcode("2592021830", section) -- následující signatura CD
+-- print("Existuje?", test:test_barcode(barcode,section))
+-- print("signatura 2?", test:test_section(barcode,section))
+-- print("Je půjčená?", test:test_pujceno(barcode, section))
+-- print("Status jednotky", test:test_status(barcode, section, {statusy = {["Nelze půjčit"]=true}}))
+-- print("Lokace", test:test_lokace(barcode,  section, {lokace = "Rett-studovna"}))
+-- print("Zpracování", test:test_zpracovani(barcode, section))
+-- print("Posloupnost signatur", test:test_signatury("2592021830", section))
+return  setmetatable({}, revize)
 
