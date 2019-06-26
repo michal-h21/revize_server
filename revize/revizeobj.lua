@@ -80,6 +80,68 @@ function revize:load_data(filename)
   return self.records
 end
 
+-- test functions
+-- each test function takes barcode, section and table with test parameters
+
+-- test existence of the barcode
+function revize:get_record(barcode)
+  return self.records[barcode], "Neznámý čárový kód"
+end
+
+function revize:test_barcode(barcode, section, params)
+  return self:get_record(barcode) ~= nil, "Neznámý čárový kód"
+end
+
+
+function revize:test_section(barcode, section, params)
+  local record, msg = self:get_record( barcode )
+  if not record then return nil, msg end
+  local rec_section = record["signatura2"]
+  return rec_section == section, "Chybná 2. signatura"
+end
+
+function revize:test_pujceno(barcode, section, params)
+  local record,msg = self:get_record(barcode)
+  if not record then return nil, msg end
+  return record.pujceno == "N", "Jednotka je vypůjčená"
+end
+
+function revize:test_status(barcode, section, params)
+  local record, msg = self:get_record(barcode)
+  if not record then return nil, msg end
+  local statusy = params.statusy
+  return statusy[record.status], "Chybný status jednotky"
+end
+
+function revize:test_lokace(barcode, section, params)
+  local record, msg = self:get_record(barcode)
+  if not record then return nil, msg end
+  return record.lokace == params.lokace, "Chybná lokace"
+end
+
+function revize:test_zpracovani(barcode, section, params)
+  local record, msg = self:get_record(barcode)
+  if not record then return nil, msg end
+  return record.zpracovani == "Nezpracovává se", "Chybný status zpracování"
+end
+
+function revize:test_signatury(barcode, section, params)
+  local get_sig_number = function(signatura) 
+    local number = signatura:match("^[0-9]?[A-Za-z]+([0-9]+)")
+    return tonumber(number)
+  end
+  -- testuje posloupnost signatur
+  local current, msg = self:get_record(barcode)
+  if not current then return nil, msg end
+  local previous_code = self.codes[#self.codes-1]
+  -- first code?
+  if not previous_code then return true, "První kód" end
+  local previous = self:get_record(previous_code.barcode)
+  -- previous code doesn't exist
+  if not previous then return true, "unkonown previous code" end
+  return get_sig_number(current.signatura) > get_sig_number(previous.signatura), "Předešlá signatura je vyšší, než současná"
+end
+
 -- return  setmetatable({}, revize)
 -- local math = require "math"
 
@@ -100,6 +162,16 @@ test:load_codes("data/text.txt")
 -- end
 --
 
-test:send_barcode("2599210012","PŘÍRUČKA")
+local barcode = "2599210012"
+local section = "PŘÍRUČKA"
+test:send_barcode(barcode,section)
+test:send_barcode("2592021830", section) -- následující signatura CD
+print("Existuje?", test:test_barcode(barcode,section))
+print("signatura 2?", test:test_section(barcode,section))
+print("Je půjčená?", test:test_pujceno(barcode, section))
+print("Status jednotky", test:test_status(barcode, section, {statusy = {["Nelze půjčit"]=true}}))
+print("Lokace", test:test_lokace(barcode,  section, {lokace = "Rett-studovna"}))
+print("Zpracování", test:test_zpracovani(barcode, section))
+print("Posloupnost signatur", test:test_signatury("2592021830", section))
 os.exit()
 
