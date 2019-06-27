@@ -41,7 +41,7 @@ function revize:load_TSV(filename)
   local t = {}
   for line in f:lines() do
     local l = {}
-    for s in line:gmatch('([^\t]+)') do
+    for s in line:gmatch('([^\t]*)') do
       -- what was this supposed to do?
       -- local p = s:gsub('[$&]','.') 
       table.insert(l,s)
