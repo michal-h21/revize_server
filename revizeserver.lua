@@ -103,10 +103,10 @@ server:add_resource("", {
             result.state = "error"
             result.msg = table.concat(messages, ",")
           end
-          result.signatura = record.signatura or ""
-          result.nazev = record.nazevautor or ""
-          result.signatura2 = record.signatura2 or ""
-          for k,v in pairs(record) do print(k,v) end
+          -- result.signatura = record.signatura or ""
+          -- result.nazev = record.nazevautor or ""
+          -- result.signatura2 = record.signatura2 or ""
+          for k,v in pairs(record) do result[k] = v end
         end
         return restserver.response():status(200):entity(result)
       end,
