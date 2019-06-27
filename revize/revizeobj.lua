@@ -146,10 +146,8 @@ end
 function revize:run_tests(barcode, section, params, tests)
   -- spustit soubor testů
   -- tests je pole s názvy testů bez prefixu test_
-  print("test runner",tests)
   local messages = {}
   for _, test in ipairs(tests) do
-    print("running test", test)
     local name = "test_"..test
     local status, msg = self[name](self,barcode, section, params)
     -- normálně test vrací hodnotu, nebo false
