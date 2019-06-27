@@ -2,6 +2,9 @@
 <html>
   <head>
     <meta charset="utf-8" />
+<style type="text/css">
+tr.error{background-color:red;}
+</style>
   </head>
   <body>
     <div>
@@ -15,7 +18,7 @@
       <div>Poslední čárový kód: <span id="result">result</span></div>
     </div>
     <table>
-      <tr id="results"><th>Status</th><th>Čárový kód</th><th>Oddíl</th></tr>
+      <tr id="results"><th>Poř. č.</th><th style="max-width:10em;">Status</th><th>Čárový kód</th><th>Oddíl</th><th>Název</th><th>Signatura</th><th>Signatura 2</th></tr>
     </table>
 <script>
 console.log("ahoj");
@@ -33,9 +36,16 @@ function nastav_oddil(){
 
 
 
-function show_status(msg, oddil, barcode, state){
-  var tpl = `<tr class="${state}"><td>${msg}</td><td>${barcode}</td><td>${oddil}</td></tr>`;
-  var results = document.getElementById("results");
+function show_status(oddil, barcode, response_table){
+  
+  let id = response_table.id;
+  let state = response_table.state;
+  let msg = response_table.msg;
+  let signatura = response_table.signatura;
+  let nazev = response_table.nazev;
+  let signatura2 = response_table.signatura2
+  let tpl = `<tr class="${state}"><td>${id}</td><td>${msg}</td><td>${barcode}</td><td>${oddil}</td><td>${nazev}</td><td>${signatura}</td><td>${signatura2}</td></tr>`;
+  let results = document.getElementById("results");
   results.insertAdjacentHTML("afterend", tpl);
 }
 
@@ -51,7 +61,7 @@ function send_barcode(barcode){
     response.json().then(response_table => {
       msg = response_table.msg;
       state = response_table.state;
-      show_status(msg,oddil, barcode, state);
+      show_status(oddil, barcode, response_table);
     });
   });
 }

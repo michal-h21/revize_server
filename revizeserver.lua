@@ -85,15 +85,28 @@ server:add_resource("", {
         table.insert(todo_list, task_submission)
         local result = {
           id = task_submission.id,
-          msg = "Ok " .. task_submission.id,
-          state = "ok"
+          msg = "Ok",
+          state = "ok",
+          signatura = "",
+          signatura2 = "",
+          nazev= ""
         }
         if section == "" then
           result.state = "error"
           result.msg = "Chybí název oddílu"
         else
-          -- todo: tady dělat testy
-
+          revizeobj:send_barcode(barcode, section)
+          local messages = revizeobj:run_tests(barcode, section, settings, settings.tests)
+          local record = revizeobj:get_record(barcode) or {}
+          -- any message means error
+          if #messages > 0 then
+            result.state = "error"
+            result.msg = table.concat(messages, ",")
+          end
+          result.signatura = record.signatura or ""
+          result.nazev = record.nazevautor or ""
+          result.signatura2 = record.signatura2 or ""
+          for k,v in pairs(record) do print(k,v) end
         end
         return restserver.response():status(200):entity(result)
       end,
