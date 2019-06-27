@@ -11,5 +11,5 @@ lokace = "Rett-knihovna"
 
 signatura = "^K"
 
-testy = {""}
+tests = {"barcode", "pujceno", "status", "lokace", "zpracovani" , "signatury"}
 
