@@ -13,8 +13,10 @@ make_backup: make_dirs
 new: make_backup
 	cp tpl/new.lua data/config.lua
 
+studovna: make_backup
+	cp tpl/studovna.lua data/config.lua
 
-.phony: install make_dirs backup new 
+.phony: install make_dirs backup new studovna
 
 install:
 	apt install lua5.3 luarocks liblua5.3-dev
