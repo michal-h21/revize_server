@@ -139,7 +139,7 @@ function revize:test_signatury(barcode, section, params)
   local previous = self:get_record(previous_code.barcode)
   -- previous code doesn't exist
   if not previous then return true, "unkonown previous code" end
-  return get_sig_number(current.signatura) > get_sig_number(previous.signatura), "Předešlá signatura je vyšší, než současná"
+  return get_sig_number(current.signatura) >= get_sig_number(previous.signatura), "Předešlá signatura je vyšší, než současná"
 end
 
 
