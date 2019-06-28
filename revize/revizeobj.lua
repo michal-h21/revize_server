@@ -1,6 +1,8 @@
 local revize = {
   codefile = false,
   codes = {},
+  records = {},
+  sequence = {}
 }
 
 revize.__index = revize
@@ -56,6 +58,7 @@ end
 -- make table accessible by the barcodes
 function revize:prepare_data(data)
   local records = {}
+  local sequence = {} -- sequence of barcodes as they appeared in the tsv
   if type(data)== "table" and #data > 1 then
     local head = data[1]
     for i=2,#data do
@@ -66,17 +69,18 @@ function revize:prepare_data(data)
         t[head[k]] = v
       end
       t.pos = i
+      sequence[#sequence+1] = barcode -- save barcode sequence
       records[barcode] = t
     end
   end
-  return records
+  return records, sequence
 end
 
 -- load TSV file with data for the current revision
 function revize:load_data(filename)
   local data = self:load_TSV(filename)
   -- make table accessible by barcodes
-  self.records = self:prepare_data(data)
+  self.records, self.sequence = self:prepare_data(data)
   return self.records
 end
 
@@ -90,6 +94,23 @@ end
 
 function revize:test_barcode(barcode, section, params)
   return self:get_record(barcode), "Neznámý čárový kód"
+end
+
+-- 
+function revize:revize_data(data, codes, params, tests)
+  local navic = {}
+  for _, code in ipairs(codes) do
+    local barcode = code.barcode
+    local section = code.section
+    local record = data[barcode]
+    if record then
+      print(barcode, record["signatura2"] == section)
+      record.tested = record.tested or (record["signatura2"] == section)
+      print(record.tested)
+    else
+      table.insert(navic, code)
+    end
+  end
 end
 
 
@@ -163,41 +184,45 @@ function revize:run_tests(barcode, section, params, tests)
 end
 
 -- return  setmetatable({}, revize)
--- local math = require "math"
+ local math = require "math"
 
---local test = setmetatable({}, revize)
+local test = setmetatable({}, revize)
 
 
---local data = test:load_data("data/studovna-revize.tsv")
---for k,v in pairs(data["2599210012"]) do 
---  print(k, v)
---end
+local data = test:load_data("data/studovna-revize.tsv")
+for k,v in pairs(data["2599210012"]) do 
+  print(k, v)
+end
 
---test:load_codes("data/text.txt")
+test:load_codes("data/text.txt")
 
----- math.randomseed( os.time() )
+-- math.randomseed( os.time() )
 
----- for i =1, 3 do
----- test:send_barcode(math.random(), "test")
----- end
-----
+-- for i =1, 3 do
+-- test:send_barcode(math.random(), "test")
+-- end
+--
 
---local barcode = "2599210012"
---local section = "PŘÍRUČKA"
---local parameters = {statusy = {["Nelze půjčit"]=true},lokace = "Rett-studovna" }
+local barcode = "2599210012"
+local section = "PŘÍRUČKA"
+local parameters = {statusy = {["Nelze půjčit"]=true},lokace = "Rett-studovna" }
 
---test:send_barcode(barcode,section)
---test:send_barcode("2592021830", section) -- následující signatura CD
---print("Existuje?", test:test_barcode(barcode,section))
---print("signatura 2?", test:test_section(barcode,section))
---print("Je půjčená?", test:test_pujceno(barcode, section))
---print("Status jednotky", test:test_status(barcode, section, parameters))
---print("Lokace", test:test_lokace(barcode,  section, parameters))
---print("Zpracování", test:test_zpracovani(barcode, section))
---print("Posloupnost signatur", test:test_signatury("2592021830", section))
+test:send_barcode(barcode,section)
+test:send_barcode("2592021830", section) -- následující signatura CD
+test:send_barcode("2592021830", "test") -- špatná sekce
+print("Existuje?", test:test_barcode(barcode,section))
+print("signatura 2?", test:test_section(barcode,section))
+print("Je půjčená?", test:test_pujceno(barcode, section))
+print("Status jednotky", test:test_status(barcode, section, parameters))
+print("Lokace", test:test_lokace(barcode,  section, parameters))
+print("Zpracování", test:test_zpracovani(barcode, section))
+print("Posloupnost signatur", test:test_signatury("2592021830", section))
 
---local messages = test:run_tests("21191", section, parameters, {"barcode", "section", "pujceno", "status", "lokace", "zpracovani" })
---print("Počet zpráv", #messages)
---for k,v in ipairs(messages) do print("chyba", v) end
+local messages = test:run_tests("21191", section, parameters, {"barcode", "section", "pujceno", "status", "lokace", "zpracovani" })
+print("Počet zpráv", #messages)
+for k,v in ipairs(messages) do print("chyba", v) end
+
+test:revize_data(test.records, test.codes)
+
 return  setmetatable({}, revize)
 
