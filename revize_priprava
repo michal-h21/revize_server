@@ -1,0 +1,2 @@
+#!/usr/bin/bash
+texlua prirtocsv.lua $1 "ck,sysno,lokace,status,nazevautor,signatura,signatura2,zpracovani,pujceno"
