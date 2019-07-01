@@ -184,45 +184,45 @@ function revize:run_tests(barcode, section, params, tests)
 end
 
 -- return  setmetatable({}, revize)
- local math = require "math"
+ --local math = require "math"
 
-local test = setmetatable({}, revize)
+--local test = setmetatable({}, revize)
 
 
-local data = test:load_data("data/studovna-revize.tsv")
-for k,v in pairs(data["2599210012"]) do 
-  print(k, v)
-end
+--local data = test:load_data("data/studovna-revize.tsv")
+--for k,v in pairs(data["2599210012"]) do 
+ -- print(k, v)
+--end
 
-test:load_codes("data/text.txt")
+--test:load_codes("data/text.txt")
 
--- math.randomseed( os.time() )
+---- math.randomseed( os.time() )
 
--- for i =1, 3 do
--- test:send_barcode(math.random(), "test")
--- end
---
+---- for i =1, 3 do
+---- test:send_barcode(math.random(), "test")
+---- end
+----
 
-local barcode = "2599210012"
-local section = "PŘÍRUČKA"
-local parameters = {statusy = {["Nelze půjčit"]=true},lokace = "Rett-studovna" }
+--local barcode = "2599210012"
+--local section = "PŘÍRUČKA"
+--local parameters = {statusy = {["Nelze půjčit"]=true},lokace = "Rett-studovna" }
 
-test:send_barcode(barcode,section)
-test:send_barcode("2592021830", section) -- následující signatura CD
-test:send_barcode("2592021830", "test") -- špatná sekce
-print("Existuje?", test:test_barcode(barcode,section))
-print("signatura 2?", test:test_section(barcode,section))
-print("Je půjčená?", test:test_pujceno(barcode, section))
-print("Status jednotky", test:test_status(barcode, section, parameters))
-print("Lokace", test:test_lokace(barcode,  section, parameters))
-print("Zpracování", test:test_zpracovani(barcode, section))
-print("Posloupnost signatur", test:test_signatury("2592021830", section))
+--test:send_barcode(barcode,section)
+--test:send_barcode("2592021830", section) -- následující signatura CD
+--test:send_barcode("2592021830", "test") -- špatná sekce
+--print("Existuje?", test:test_barcode(barcode,section))
+--print("signatura 2?", test:test_section(barcode,section))
+--print("Je půjčená?", test:test_pujceno(barcode, section))
+--print("Status jednotky", test:test_status(barcode, section, parameters))
+--print("Lokace", test:test_lokace(barcode,  section, parameters))
+--print("Zpracování", test:test_zpracovani(barcode, section))
+--print("Posloupnost signatur", test:test_signatury("2592021830", section))
 
-local messages = test:run_tests("21191", section, parameters, {"barcode", "section", "pujceno", "status", "lokace", "zpracovani" })
-print("Počet zpráv", #messages)
-for k,v in ipairs(messages) do print("chyba", v) end
+--local messages = test:run_tests("21191", section, parameters, {"barcode", "section", "pujceno", "status", "lokace", "zpracovani" })
+--print("Počet zpráv", #messages)
+--for k,v in ipairs(messages) do print("chyba", v) end
 
-test:revize_data(test.records, test.codes)
+--test:revize_data(test.records, test.codes)
 
 return  setmetatable({}, revize)
 
