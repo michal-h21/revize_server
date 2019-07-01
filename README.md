@@ -6,6 +6,10 @@ Vygenerovat tsv soubor pomocí skriptu (je součástí skriptů přírustkového
 
     ./revize_priprava xml_soubor_z_alephu > tabulka.tsv
 
+Pokud obsahuje víc signatur, rozdělit je pomocí 
+
+    texlua filtrovatsignatury.lua   < tabulka.tsv
+
 # Nová revize
 
     make new
