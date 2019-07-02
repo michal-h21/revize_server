@@ -59,6 +59,17 @@ server:add_resource("", {
    },
    {
       method = "GET",
+      path = "revize",
+      produces = "text/tab-separated-values",
+      handler = function()
+        local result = revizeobj:revize_data(revizeobj.records, revizeobj.codes)
+        print("proč?")
+        print(result)
+        return restserver.response():status(200):entity(result)
+      end
+   },
+   {
+      method = "GET",
       path = "/",
       produces = "text/html",
       handler = function()

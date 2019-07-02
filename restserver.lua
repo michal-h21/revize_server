@@ -81,6 +81,8 @@ local function encode(data, mimetype, schema)
       return data or ""
    elseif mimetype == "text/html" then
       return data or ""
+   elseif mimetype == "text/tab-separated-values" then
+      return data or ""
    elseif not mimetype then
       return data or ""
    else

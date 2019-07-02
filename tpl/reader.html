@@ -71,6 +71,13 @@ function send_barcode(barcode){
 var handlers = {
   "#end": (response => {
     print_info("Konec");
+  }),
+  "#revize": (response => {
+    response.text().then(text => {
+      var blob = new Blob([text], {type: "text/tab-separated-values"});
+      var objectUrl = URL.createObjectURL(blob);
+      window.open(objectUrl);
+    });
   })
 }
 
