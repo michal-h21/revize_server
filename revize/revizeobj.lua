@@ -99,6 +99,7 @@ end
 -- 
 function revize:revize_data(data, codes, params, tests)
   local navic = {}
+  local sorted_data = {}
   for _, code in ipairs(codes) do
     local barcode = code.barcode
     local section = code.section
@@ -106,11 +107,29 @@ function revize:revize_data(data, codes, params, tests)
     if record then
       print(barcode, record["signatura2"] == section)
       record.tested = record.tested or (record["signatura2"] == section)
+      record.section = section
       print(record.tested)
     else
       table.insert(navic, code)
     end
   end
+  -- sort data records back to their original position
+  for _, record in pairs(data) do table.insert(sorted_data, record) end
+  table.sort(sorted_data, function(a,b) return a.pos < b.pos end)
+  local header = ("ČK\tSYSNO\tlokace\tstatus\tsignatura\tsignatura2\toddíl\tzpracování\tpůjčeno\tnačteno\tshoda oddílů")
+  local lines = {header}
+  -- print if all records have been checked and put in the correct section
+  for _, rec in ipairs(sorted_data) do
+    local nacteno = rec.tested~= nil and "ano" or "ne"
+    local shoda = rec.tested == true and "ano" or "ne"
+    local t = {rec.ck, rec.sysno, rec.lokace, rec.status, rec.signatura, rec["signatura2"], rec.section or "", rec.zpracovani, rec.pujceno, nacteno, shoda}
+    table.insert(lines, table.concat(t,"\t"))
+  end
+  -- print all unknown barcodes
+  for _, code in ipairs(navic) do
+    table.insert(lines, code)
+  end
+  print(table.concat(lines, "\n"))
 end
 
 
@@ -184,14 +203,14 @@ function revize:run_tests(barcode, section, params, tests)
 end
 
 -- return  setmetatable({}, revize)
- --local math = require "math"
+--local math = require "math"
 
 --local test = setmetatable({}, revize)
 
 
 --local data = test:load_data("data/studovna-revize.tsv")
 --for k,v in pairs(data["2599210012"]) do 
- -- print(k, v)
+--  print(k, v)
 --end
 
 --test:load_codes("data/text.txt")
@@ -210,6 +229,9 @@ end
 --test:send_barcode(barcode,section)
 --test:send_barcode("2592021830", section) -- následující signatura CD
 --test:send_barcode("2592021830", "test") -- špatná sekce
+--test:send_barcode("2597810717", "VV 1")  -- všechno v pořádku
+--test:send_barcode("2597611899", "VV 2")  -- špatná sekce
+
 --print("Existuje?", test:test_barcode(barcode,section))
 --print("signatura 2?", test:test_section(barcode,section))
 --print("Je půjčená?", test:test_pujceno(barcode, section))
