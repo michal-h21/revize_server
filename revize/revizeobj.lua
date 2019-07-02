@@ -129,7 +129,7 @@ function revize:revize_data(data, codes, params, tests)
   for _, code in ipairs(navic) do
     table.insert(lines, code)
   end
-  print(table.concat(lines, "\n"))
+  return table.concat(lines, "\n")
 end
 
 
