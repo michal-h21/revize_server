@@ -22,7 +22,11 @@ nebo pro studovnu
 
 Spustit sript `revizechyby.lua` na adresář obsahující konfigurační soubor, data revize a načtené kódy:
 
-    lua revizechyby.lua 2sc
+    lua revizechyby.lua 2sc > revize_2sc.tsv
+
+Získat pořadí načtených kódů
+
+    lua nacteneporadi.lua 2sc > poradi_2sc.tsv
 
 # instalace na notebooky
 
