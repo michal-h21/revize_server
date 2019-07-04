@@ -174,7 +174,9 @@ function revize:test_signatury(barcode, section, params)
   -- testuje posloupnost signatur
   local current, msg = self:get_record(barcode)
   if not current then return nil, msg end
-  local previous_code = self.codes[#self.codes-1]
+  local previous_number = params.current_pos or #self.codes-1
+
+  local previous_code = self.codes[previous_number]
   -- first code?
   if not previous_code then return true, "První kód" end
   local previous = self:get_record(previous_code.barcode)
