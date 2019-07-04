@@ -18,6 +18,12 @@ nebo pro studovnu
 
     make studovna
 
+# Vygenerování kontrolního souboru
+
+Spustit sript `revizechyby.lua` na adresář obsahující konfigurační soubor, data revize a načtené kódy:
+
+    lua revizechyby.lua 2sc
+
 # instalace na notebooky
 
 - [Nainstalovat Ubunbtu na Windows](https://itsfoss.com/install-bash-on-windows/)
