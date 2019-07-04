@@ -16,7 +16,7 @@ function revize:save_barcode(barcode, section)
 end
 
 function revize:add_code(barcode, section)
-  print("add", barcode, section)
+  -- print("add", barcode, section)
   table.insert(self.codes, {barcode = barcode, section = section})
   -- ToDo: handle loaded barcodes
 end
@@ -25,6 +25,7 @@ end
 function revize:send_barcode(barcode, section)
   self:save_barcode(barcode, section)
   -- return status
+  print("add", barcode, section)
   return self:add_code(barcode, section)
 end
 
@@ -105,10 +106,10 @@ function revize:revize_data(data, codes, params, tests)
     local section = code.section
     local record = data[barcode]
     if record then
-      print(barcode, record["signatura2"] == section)
+      -- print(barcode, record["signatura2"] == section)
       record.tested = record.tested or (record["signatura2"] == section)
       record.section = section
-      print(record.tested)
+      -- print(record.tested)
     else
       table.insert(navic, code)
     end
@@ -116,18 +117,18 @@ function revize:revize_data(data, codes, params, tests)
   -- sort data records back to their original position
   for _, record in pairs(data) do table.insert(sorted_data, record) end
   table.sort(sorted_data, function(a,b) return a.pos < b.pos end)
-  local header = ("ČK\tSYSNO\tlokace\tstatus\tsignatura\tsignatura2\toddíl\tzpracování\tpůjčeno\tnačteno\tshoda oddílů")
+  local header = ("ČK\tSYSNO\tnázev\tlokace\tstatus\tsignatura\tsignatura2\toddíl\tzpracování\tpůjčeno\tnačteno\tshoda oddílů")
   local lines = {header}
   -- print if all records have been checked and put in the correct section
   for _, rec in ipairs(sorted_data) do
     local nacteno = rec.tested~= nil and "ano" or "ne"
     local shoda = rec.tested == true and "ano" or "ne"
-    local t = {rec.ck, rec.sysno, rec.lokace, rec.status, rec.signatura, rec["signatura2"], rec.section or "", rec.zpracovani, rec.pujceno, nacteno, shoda}
+    local t = {rec.ck, rec.sysno, rec.nazevautor, rec.lokace, rec.status, rec.signatura, rec["signatura2"], rec.section or "", rec.zpracovani, rec.pujceno, nacteno, shoda}
     table.insert(lines, table.concat(t,"\t"))
   end
   -- print all unknown barcodes
   for _, code in ipairs(navic) do
-    table.insert(lines, code)
+    table.insert(lines, code.barcode)
   end
   return table.concat(lines, "\n")
 end
