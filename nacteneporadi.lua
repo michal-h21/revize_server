@@ -20,12 +20,15 @@ codes = codes:gsub("^data", dir)
 data = data:gsub("^data", dir)
 revizeobj:load_data(data)
 revizeobj:load_codes(codes)
+local header = ("pořadí\tČK\toddíl\tchyba\tSYSNO\tnázev\tlokace\tstatus\tsignatura\tsignatura2\tzpracování")
+print(header)
 for i, code in ipairs(revizeobj.codes) do
   local barcode = code.barcode
   local section = code.section
   settings.current_pos = i
-  local messages = revizeobj:run_tests(barcode, section, settings, settings.tests)
+  local messages = revizeobj:run_tests(barcode, section, settings, settings.tests) 
   local record = revizeobj:get_record(barcode) or {}
-  print(barcode, section, table.concat(messages, ","),record.signatura)
+  local rest = {record.sysno, record.nazevautor,record.lokace,record.status,record.signatura, record["signatura2"], record.zpracovani}
+  print(i,barcode, section, table.concat(messages, ","),table.concat(rest, "\t"))
 
 end
