@@ -168,7 +168,7 @@ end
 
 function revize:test_signatury(barcode, section, params)
   local get_sig_number = function(signatura) 
-    local number = signatura:match("^[0-9]?[A-Za-z]+([0-9]+)")
+    local number = signatura:match("^C?-?[0-9]?[A-Za-z]+([0-9]+)")
     return tonumber(number)
   end
   -- testuje posloupnost signatur
@@ -182,7 +182,10 @@ function revize:test_signatury(barcode, section, params)
   local previous = self:get_record(previous_code.barcode)
   -- previous code doesn't exist
   if not previous then return true, "unkonown previous code" end
-  return get_sig_number(current.signatura) >= get_sig_number(previous.signatura), "Předešlá signatura je vyšší, než současná"
+  local sig1 = get_sig_number(current.signatura)
+  local sig2 = get_sig_number(previous.signatura)
+  if sig1 == nil or sig2 == nil then return false, "Nelze rozpoznat signaturu: " .. (current.signatura  or "") .. ", " .. (previous.signatura or "") end
+  return sig1 >= sig2 , "Předešlá signatura je vyšší, než současná"
 end
 
 
