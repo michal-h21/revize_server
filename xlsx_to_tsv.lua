@@ -82,6 +82,20 @@ local function read_data(data, ctenar, id)
   return records
 end
 
+local function print_records(records)
+  print(table.concat(poradi, "\t"))
+  for _,rec in ipairs(records) do
+    -- pujceno obsahuje datum, pokud je kniha pujcena
+    -- my potrebujeme Y nebo N
+    rec.pujceno = rec.pujceno == "" and "N" or "Y"
+    rec.zpracovani = rec.zpracovani == "Jednotka JE na místě" and "Nezpracovává se" or rec.zpracovani
+    local t = {}
+    for _,field in ipairs(poradi) do
+      t[#t+1] = rec[field]
+    end
+    print(table.concat(t, "\t"))
+  end
+end
 if not input then
   print "Chybí vstupní soubor"
   help()
@@ -106,7 +120,8 @@ if not records then
   print(msg)
   os.exit()
 end
-print "zpracovano"
+
+print_records(records)
 -- local authors = make_authors(records)
 -- make_files(authors, template)
 

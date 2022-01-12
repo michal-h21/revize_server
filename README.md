@@ -6,7 +6,13 @@ Vygenerovat tsv soubor pomocí skriptu (je součástí skriptů přírustkového
 
     ./revize_priprava xml_soubor_z_alephu > tabulka.tsv
 
-Pokud obsahuje víc signatur, rozdělit je pomocí 
+Z Almy zatím dokážu dostat XLSX soubor se seznamem jednotek, kterej ale
+neobsahuje status zpracování. Předělám ho na tsv pomocí 
+
+    texlua xlsx_to_tsv.lua soubor.xlsx > tabulka.tsv
+
+
+Pokud tsv soubor obsahuje víc signatur, rozdělit je pomocí 
 
     texlua filtrovatsignatury.lua   < tabulka.tsv
 
