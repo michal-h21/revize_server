@@ -17,6 +17,9 @@ end
 
 function revize:add_code(barcode, section)
   -- print("add", barcode, section)
+  if section then
+    section = string.gsub(section,"%s$", "")
+  end
   table.insert(self.codes, {barcode = barcode, section = section})
   -- ToDo: handle loaded barcodes
 end
