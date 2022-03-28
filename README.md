@@ -1,20 +1,27 @@
 # Příprava souborů
 
+
+Z Almy můžeme získat XML soubor v modulu: 
+
+```
+Analýzy -> Statistiky pro správu fondu a katalogizaci -> Přehledy -> Místní seznam (dle signatury holdingu)
+```
+
+Z něj vytvořím TSV soubor pomocí
+
+    texlua alma_revize.lua xml_soubor_z_almy > tabulky.tsv
+
+Pokud tsv soubor obsahuje víc signatur, rozdělit je pomocí 
+
+    texlua filtrovatsignatury.lua   < tabulka.tsv
+
+# Postup z Alephu
+
 Vygenerovat seznam jednotek pro danou část fondu pomocí obecného formuláře pro vyhledávání.
 
 Vygenerovat tsv soubor pomocí skriptu (je součástí skriptů přírustkového seznamu)
 
     ./revize_priprava xml_soubor_z_alephu > tabulka.tsv
-
-Z Almy zatím dokážu dostat XLSX soubor se seznamem jednotek, kterej ale
-neobsahuje status zpracování. Předělám ho na tsv pomocí 
-
-    texlua xlsx_to_tsv.lua soubor.xlsx > tabulka.tsv
-
-
-Pokud tsv soubor obsahuje víc signatur, rozdělit je pomocí 
-
-    texlua filtrovatsignatury.lua   < tabulka.tsv
 
 # Nová revize
 
