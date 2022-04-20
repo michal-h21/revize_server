@@ -2,9 +2,9 @@ codes="data/codes.txt"
 data = "data/revizesveschno.tsv"
 
 statusy = {
-  ["Běžná"]=true,
-  ["Přísně prezenční"] = true,
-  ["Specifická"] = true
+  ["Regular loan"]=true,
+  ["Strictly in-house loan"] = true,
+  ["Specific loan"] = true
 }
 
 lokace = "Rett-knihovna"
