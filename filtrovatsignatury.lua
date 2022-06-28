@@ -46,11 +46,15 @@ for i=2,#t do
     print("chybí signatura", table.concat(radek, "\t"))
   end
   -- najít název signatury
-  local prefix = signatura:match("^([0-9]*[A-Za-z]+)")
-  -- získat pole, kde jsou všechny současné signatury
-  local current = signatury[prefix] or {}
-  table.insert(current, table.concat(radek, "\t"))
-  signatury[prefix] = current
+  local prefix = signatura:match("^%s*([0-9]*[A-Za-z]+)")
+  if prefix then
+    -- získat pole, kde jsou všechny současné signatury
+    local current = signatury[prefix] or {}
+    table.insert(current, table.concat(radek, "\t"))
+    signatury[prefix] = current
+  else
+    print("bez signatury?", "." .. signatura, radek[1])
+  end
 end
 
 for sig, data in pairs(signatury) do
