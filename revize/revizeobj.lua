@@ -44,6 +44,10 @@ end
 
 function revize:load_TSV(filename)
   local f = io.open(filename,"r")
+  if not f then 
+    print("Cannot load data file: " .. filename)
+    os.exit()
+  end
   local t = {}
   for line in f:lines() do
     local l = {}
