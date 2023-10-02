@@ -15,6 +15,10 @@ Pokud tsv soubor obsahuje víc signatur, rozdělit je pomocí
 
     texlua filtrovatsignatury.lua   < tabulka.tsv
 
+Další možnost je vyhledat v Almě jednotky podle signatury a exportovat XLSX soubor s kompletním výstupem. To pak zpracujeme:
+
+    texlua xlsx_to_tsv.lua xlsx_soubor_z_almy.xlsx > tabulka.tsv
+
 # Postup z Alephu
 
 Vygenerovat seznam jednotek pro danou část fondu pomocí obecného formuláře pro vyhledávání.
