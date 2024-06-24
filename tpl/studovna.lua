@@ -10,5 +10,5 @@ statusy = {
 lokace = "Rett-studovna" 
 
 -- testy při načítání čárových kódů
-tests = {"barcode", "pujceno", "status", "lokace", "zpracovani" , "section"}
+tests = {"barcode", "pujceno", "status", "zpracovani" , "section", "vyradit"}
 

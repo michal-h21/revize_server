@@ -195,6 +195,17 @@ function revize:test_signatury(barcode, section, params)
   return sig1 >= sig2 , "Předešlá signatura je vyšší, než současná"
 end
 
+function revize:test_vyradit(barcode, section, params)
+  -- test sloupečku vyřadit
+  local current, msg = self:get_record(barcode)
+  if not current then return nil, msg end
+  if current.vyradit == "true" then
+    return false, "Jednotka k vyřazení"
+  else
+    return true
+  end
+end
+
 
 function revize:run_tests(barcode, section, params, tests)
   -- spustit soubor testů
