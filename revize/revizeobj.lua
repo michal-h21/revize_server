@@ -196,9 +196,11 @@ function revize:test_signatury(barcode, section, params)
 end
 
 function revize:test_vyradit(barcode, section, params)
-  -- test sloupečku vyřadit
+  -- pokud v tsv souboru není sloupeček vyradit, vůbec netestujeme
+  if not current.vyradit then return true end
   local current, msg = self:get_record(barcode)
   if not current then return nil, msg end
+  -- test sloupečku vyřadit
   if current.vyradit == "true" then
     return false, "Jednotka k vyřazení"
   else
