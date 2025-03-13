@@ -197,6 +197,7 @@ end
 
 function revize:test_vyradit(barcode, section, params)
   -- pokud v tsv souboru není sloupeček vyradit, vůbec netestujeme
+  local current, msg = self:get_record(barcode)
   if not current.vyradit then return true end
   local current, msg = self:get_record(barcode)
   if not current then return nil, msg end
