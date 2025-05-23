@@ -43,13 +43,19 @@ local poradi =  { "ck","sysno","lokace","status","nazevautor","signatura","signa
 local mapping = {
 [""] = "dilciknihovna",
 ["MMS Id"] = "sysno",
+["Inventory Number"] = "sysno",
 ["Location Name"] = "lokace",
 ["Výpůjční pravidla"] = "status",
+["Item Policy"] = "status",
 -- [""] = "nazevautor",
 ["Signatura jednotky"]="signatura",
+["Item Call Number"] = "signatura",
 ["Holdingová signatura"]="signatura2",
+["Permanent Call Number"]="signatura2", 
 ["Čárový kód"]="ck",
+["Barcode"]="ck",
 ["Typ procesu"] = "zpracovani",
+["Process Type"] = "zpracovani",
 -- ["Process Type"] = "pujceno"
 }
 
